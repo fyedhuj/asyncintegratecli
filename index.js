@@ -1,15 +1,17 @@
-function removeNthFromEnd(head, n) {
-  const dummy = new ListNode(0);
-  dummy.next = head;
-  let first = dummy;
-  let second = dummy;
-  for (let i = 1; i <= n + 1; i++) {
-    first = first.next;
+function countPrimes(n) {
+  const isPrime = new Array(n).fill(true);
+  isPrime[0] = false;
+  isPrime[1] = false;
+  for (let i = 2; i * i < n; i++) {
+    if (isPrime[i]) {
+      for (let j = i * i; j < n; j += i) {
+        isPrime[j] = false;
+      }
+    }
   }
-  while (first !== null) {
-    first = first.next;
-    second = second.next;
+  let count = 0;
+  for (let i = 2; i < n; i++) {
+    if (isPrime[i]) count++;
   }
-  second.next = second.next.next;
-  return dummy.next;
+  return count;
 }

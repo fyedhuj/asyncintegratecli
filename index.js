@@ -1,10 +1,22 @@
-function minimumTotal(triangle) {
-  const n = triangle.length;
-  const dp = triangle[n - 1];
-  for (let i = n - 2; i >= 0; i--) {
-    for (let j = 0; j <= i; j++) {
-      dp[j] = triangle[i][j] + Math.min(dp[j], dp[j + 1]);
+function findOrder(numCourses, prerequisites) {
+  const graph = new Array(numCourses).fill(0).map(() => []);
+  const inDegree = new Array(numCourses).fill(0);
+  for (const [course, pre] of prerequisites) {
+    graph[pre].push(course);
+    inDegree[course]++;
+  }
+  const queue = [];
+  for (let i = 0; i < numCourses; i++) {
+    if (inDegree[i] === 0) queue.push(i);
+  }
+  const result = [];
+  while (queue.length) {
+    const course = queue.shift();
+    result.push(course);
+    for (const nextCourse of graph[course]) {
+      inDegree[nextCourse]--;
+      if (inDegree[nextCourse] === 0) queue.push(nextCourse);
     }
   }
-  return dp[0];
+  return result.length === numCourses ? result : [];
 }
